@@ -1,29 +1,16 @@
 <script>
   import Pagination from '@/components/table/Pagination.vue';
+  import Filters from '@/components/table/AppealsFilters.vue';
   import { mapGetters, mapActions } from 'vuex';
 
   export default {
     name: 'AppealsList',
     components: {
       Pagination,
-    },
-    data() {
-      return {
-        filters: {
-          search: '',
-          premiseId: null,
-          debounceTimeout: null,
-        },
-      };
+      Filters,
     },
     computed: {
-      ...mapGetters('appealsModule', [
-        'appeals',
-        'premises',
-        'pagination',
-        'isLoading',
-      ]),
-
+      ...mapGetters('appealsModule', ['appeals', 'pagination', 'isLoading']),
       // получаем адресс, если вообще есть хоть какой-то. в случае полного отствия хоть каких-то данных по адресу, возвращаем заглушку
       getAddress() {
         return appeal => {
@@ -41,10 +28,8 @@
     methods: {
       ...mapActions('appealsModule', [
         'fetchPremises',
-        'setFilters',
         'setPagination',
         'fetchAppeals',
-        'setLoadingOn',
       ]),
       handlePageChange(page) {
         this.setPagination({ page });
@@ -52,23 +37,6 @@
       },
       editAppeal(appeal) {
         this.$emit('editAppeal', appeal);
-      },
-      updateFiltersHouse() {
-        this.filters.search = '';
-
-        this.setFilters({ premiseId: this.filters.premiseId });
-        this.fetchAppeals();
-      },
-      updateFiltersSearch() {
-        this.filters.premiseId = null;
-
-        this.setLoadingOn();
-        clearTimeout(this.debounceTimeout);
-
-        this.debounceTimeout = setTimeout(() => {
-          this.setFilters({ search: this.filters.search });
-          this.fetchAppeals();
-        }, 300);
       },
     },
     mounted() {
@@ -80,26 +48,7 @@
 
 <template>
   <div class="appeals-list">
-    <div class="filters">
-      <input
-        v-model="filters.search"
-        placeholder="Поиск по заявкам"
-        @input="updateFiltersSearch"
-      />
-      <select
-        v-if="premises && premises.length"
-        v-model="filters.premiseId"
-        @change="updateFiltersHouse"
-      >
-        <option
-          v-for="premise in premises"
-          :key="premise.id"
-          :value="premise.id"
-        >
-          {{ premise.address }}
-        </option>
-      </select>
-    </div>
+    <Filters />
 
     <table>
       <thead>
