@@ -131,8 +131,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: url('https://s3-alpha-sig.figma.com/img/a7be/90cd/076dc3828d4323a8f6f5d083dfaff115?Expires=1733097600&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=mtXuFqWXy62beFsPVyDAtDsOJUIL0wYo8XGZ421yOU4QJ-pyeZymGHCJerUoKnr71t5YOmGSwKjrE5-KJqlJ6Y0sWdZNfHLRlr2ZKfJW4RI~6IFdhCCDeGQGSHdu2ObVcPagcD37nxjCfsW-bchscMAocRKJIpSCfsOR8SAPtupStAOpHwc~e-tt3uk8fzxTIidW~VKm4dLuhRE8bL3drOwnjaAyQzBhIZq2Y0cZGWWJzOuyCQfviZqhKiTgBXByMkcP9ZUVO0n5yysK7zrVGf08kHnZHZuqyXlfQ4ZcWMlLTY3q6oduVXW~her15OOPCCh4ej0-lpdEo2ZOda8i~g__')
-      no-repeat center center;
+    background: url(~@/assets/background.jpeg) no-repeat center center;
     background-size: cover;
 
     .auth-box {
