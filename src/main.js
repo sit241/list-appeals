@@ -3,6 +3,7 @@ import App from './App';
 import router from './router';
 import store from './store';
 import axiosInstance from './plugins/axios';
+import '@mdi/font/css/materialdesignicons.min.css';
 
 Vue.prototype.$axios = axiosInstance;
 Vue.config.productionTip = false;
