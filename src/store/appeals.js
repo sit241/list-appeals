@@ -38,12 +38,10 @@ const actions = {
         params: {
           page,
           page_size: pageSize,
-          search: '',
-          premise_id: '',
+          search: search || '',
+          premise_id: premiseId || '',
         },
       });
-      console.log('test');
-      console.log(response);
 
       commit('setAppeals', response.data.results);
       commit('setPagination', {
@@ -63,7 +61,7 @@ const actions = {
       const response = await axios.get('/geo/v2.0/user-premises/', {
         params: { search },
       });
-      commit('setPremises', response.data);
+      commit('setPremises', response.data.results);
     } catch (error) {
       console.error('Ошибка загрузки домов:', error);
     }
@@ -113,14 +111,19 @@ const actions = {
     commit('setFilters', filters);
   },
 
-  async setFiltersAndFetch({ commit }, filters) {
-    commit('setFilters', filters);
-    await this.dispatch('fetchAppeals'); // Выполнение запроса после изменения фильтров
-  },
-
   // Установить пагинацию
   setPagination({ commit }, pagination) {
     commit('setPagination', pagination);
+  },
+
+  // Включить статус загрузки
+  setLoadingOn({ commit }) {
+    commit('setLoading', true);
+  },
+
+  // Выключить статус загрузки
+  setLoadingOff({ commit }) {
+    commit('setLoading', false);
   },
 };
 

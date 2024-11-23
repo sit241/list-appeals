@@ -12,6 +12,7 @@
         filters: {
           search: '',
           premiseId: null,
+          debounceTimeout: null,
         },
       };
     },
@@ -22,14 +23,28 @@
         'pagination',
         'isLoading',
       ]),
+
+      // получаем адресс, если вообще есть хоть какой-то. в случае полного отствия хоть каких-то данных по адресу, возвращаем заглушку
+      getAddress() {
+        return appeal => {
+          const addressParts = [];
+          if (appeal && appeal.premise && appeal.premise.short_address) {
+            addressParts.push(appeal.premise.short_address);
+          }
+          if (appeal && appeal.apartment && appeal.apartment.label) {
+            addressParts.push(appeal.apartment.label);
+          }
+          return addressParts.join(', ') || 'Адрес отсутствует';
+        };
+      },
     },
     methods: {
       ...mapActions('appealsModule', [
         'fetchPremises',
         'setFilters',
         'setPagination',
-        'setFiltersAndFetch',
         'fetchAppeals',
+        'setLoadingOn',
       ]),
       handlePageChange(page) {
         this.setPagination({ page });
@@ -37,6 +52,19 @@
       },
       editAppeal(appeal) {
         this.$emit('editAppeal', appeal);
+      },
+      updateFiltersHouse() {
+        this.setFilters({ premiseId: this.filters.premiseId });
+        this.fetchAppeals();
+      },
+      updateFiltersSearch() {
+        this.setLoadingOn();
+        clearTimeout(this.debounceTimeout);
+
+        this.debounceTimeout = setTimeout(() => {
+          this.setFilters({ search: this.filters.search });
+          this.fetchAppeals();
+        }, 300);
       },
     },
     mounted() {
@@ -52,20 +80,19 @@
       <input
         v-model="filters.search"
         placeholder="Поиск по заявкам"
-        @input="fetchAppeals"
+        @input="updateFiltersSearch"
       />
       <select
         v-if="premises && premises.length"
         v-model="filters.premiseId"
-        @change="fetchAppeals"
+        @change="updateFiltersHouse"
       >
-        <option value="">Выберите дом</option>
         <option
           v-for="premise in premises"
           :key="premise.id"
           :value="premise.id"
         >
-          {{ premise.name }}
+          {{ premise.address }}
         </option>
       </select>
     </div>
@@ -102,23 +129,7 @@
             }}
           </td>
           <td>
-            <div
-              class=""
-              v-if="
-                appeal &&
-                  appeal.premise &&
-                  appeal.premise.short_address &&
-                  appeal.apartment &&
-                  appeal.apartment.label
-              "
-            >
-              {{ appeal.premise.short_address }},
-              {{ appeal.apartment.label }}
-            </div>
-
-            <div class="" v-else>
-              <pre>Адрес отсутвует</pre>
-            </div>
+            {{ getAddress(appeal) }}
           </td>
           <td>
             {{ appeal.applicant.last_name }}
@@ -154,3 +165,17 @@
     />
   </div>
 </template>
+
+<style lang="scss">
+  @import '@/assets/scss/variables.scss';
+
+  .appeals-list {
+    background-color: $background-color;
+
+    top: 27px;
+    left: 15px;
+    padding: 10px 20px 10px 20px;
+    gap: 32px;
+    border-radius: 8px;
+  }
+</style>
