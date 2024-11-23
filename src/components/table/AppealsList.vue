@@ -54,10 +54,14 @@
         this.$emit('editAppeal', appeal);
       },
       updateFiltersHouse() {
+        this.filters.search = '';
+
         this.setFilters({ premiseId: this.filters.premiseId });
         this.fetchAppeals();
       },
       updateFiltersSearch() {
+        this.filters.premiseId = null;
+
         this.setLoadingOn();
         clearTimeout(this.debounceTimeout);
 

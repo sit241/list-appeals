@@ -141,7 +141,7 @@ const mutations = {
     state.appealDetails = appealDetails;
   },
   setFilters(state, filters) {
-    state.filters = { ...state.filters, ...filters };
+    state.filters = { ...filters };
   },
   setPagination(state, pagination) {
     state.pagination = { ...state.pagination, ...pagination };
