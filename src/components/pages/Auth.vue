@@ -24,6 +24,10 @@
           this.$router.push(redirect);
         } catch (err) {
           this.error = 'Ошибка входа. Проверьте логин и пароль.';
+
+          setTimeout(() => {
+            this.error = '';
+          }, 3000);
         }
       },
       togglePassword() {
@@ -99,8 +103,8 @@
           <button type="submit" class="submit-button">Войти</button>
         </div>
       </form>
-      <div v-if="error" class="error-message">{{ error }}</div>
     </div>
+    <div v-if="error" class="error-message">{{ error }}</div>
   </div>
 </template>
 
@@ -125,6 +129,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
+
     height: 100vh;
     background: url(~@/assets/background.jpeg) no-repeat center center;
     background-size: cover;
@@ -267,12 +273,21 @@
           }
         }
       }
+    }
 
-      .error-message {
-        margin-top: 15px;
-        color: $error-color;
-        font-size: 14px;
-      }
+    .error-message {
+      position: absolute;
+      bottom: 26px;
+
+      margin-top: 15px;
+      //   color: $error-color;
+      color: $background-color;
+      font-size: 14px;
+
+      //   background-color: $background-color;
+      background-color: $error-color;
+      padding: 6px;
+      border-radius: 5px;
     }
   }
 </style>
