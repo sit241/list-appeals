@@ -16,7 +16,12 @@
       };
     },
     computed: {
-      ...mapGetters('appealsModule', ['appeals', 'premises', 'pagination']),
+      ...mapGetters('appealsModule', [
+        'appeals',
+        'premises',
+        'pagination',
+        'isLoading',
+      ]),
     },
     methods: {
       ...mapActions('appealsModule', [
@@ -79,7 +84,10 @@
         </tr>
       </thead>
       <tbody>
-        <tr v-if="appeals.length === 0">
+        <tr v-if="isLoading">
+          <td colspan="8">загрузка</td>
+        </tr>
+        <tr v-else-if="appeals.length === 0">
           <td colspan="8">Заявки не найдены</td>
         </tr>
         <tr v-for="appeal in appeals" :key="appeal.id">
