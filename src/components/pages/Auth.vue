@@ -18,7 +18,10 @@
             username: this.username,
             password: this.password,
           });
-          alert('Успешный вход!');
+
+          // После успешного логина, перенаправляем пользователя
+          const redirect = this.$route.query.redirect || '/';
+          this.$router.push(redirect);
         } catch (err) {
           this.error = 'Ошибка входа. Проверьте логин и пароль.';
         }
