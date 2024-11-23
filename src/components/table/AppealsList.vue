@@ -142,12 +142,7 @@
       </tbody>
     </table>
 
-    <pagination
-      :page="pagination.page"
-      :pageSize="pagination.pageSize"
-      :total="pagination.total"
-      @change="handlePageChange"
-    />
+    <pagination @change="fetchAppeals" />
   </div>
 </template>
 
