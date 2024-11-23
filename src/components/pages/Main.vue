@@ -11,7 +11,7 @@
 </script>
 
 <template>
-  <div>
+  <div class="wrapper">
     <div class="header">
       <LogoutButton />
     </div>
@@ -20,7 +20,10 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
+  .wrapper {
+    padding: 15px;
+  }
   .header {
     display: flex;
     justify-content: flex-end;
