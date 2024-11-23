@@ -10,7 +10,14 @@
       Filters,
     },
     computed: {
-      ...mapGetters('appealsModule', ['appeals', 'pagination', 'isLoading']),
+      ...mapGetters('appealsModule', [
+        'appeals',
+        'sortedAppeals',
+        'pagination',
+        'isLoading',
+        'sortBy',
+        'sortOrder',
+      ]),
       // получаем адресс, если вообще есть хоть какой-то. в случае полного отствия хоть каких-то данных по адресу, возвращаем заглушку
       getAddress() {
         return appeal => {
@@ -27,10 +34,22 @@
     },
     methods: {
       ...mapActions('appealsModule', [
+        'setSortBy',
+        'setSortOrderActions',
         'fetchPremises',
         'setPagination',
         'fetchAppeals',
       ]),
+      handleSort(field) {
+        if (this.sortBy === field) {
+          // Переключение порядка сортировки
+          this.setSortOrderActions(this.sortOrder == 'asc' ? 'desc' : 'asc');
+        } else {
+          // Установка нового поля сортировки
+          this.setSortBy(field);
+          this.setSortOrderActions('asc');
+        }
+      },
       handlePageChange(page) {
         this.setPagination({ page });
         this.fetchAppeals();
@@ -53,24 +72,39 @@
     <table>
       <thead>
         <tr>
-          <th>№</th>
-          <th>Создана</th>
+          <th @click="handleSort('number')" style="cursor: pointer">
+            №
+            <span v-if="sortBy === 'number'">
+              {{ sortOrder === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
+          <th @click="handleSort('created_at')" style="cursor: pointer">
+            Создана
+            <span v-if="sortBy === 'created_at'">
+              {{ sortOrder === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
           <th>Адрес</th>
           <th>Заявитель</th>
           <th>Описание</th>
           <th>Срок</th>
-          <th>Статус</th>
+          <th @click="handleSort('status')" style="cursor: pointer">
+            Статус
+            <span v-if="sortBy === 'status'">
+              {{ sortOrder === 'asc' ? '↑' : '↓' }}
+            </span>
+          </th>
           <th>Действия</th>
         </tr>
       </thead>
       <tbody>
         <tr v-if="isLoading">
-          <td colspan="8">загрузка</td>
+          <td colspan="8">Загрузка...</td>
         </tr>
-        <tr v-else-if="appeals.length === 0">
+        <tr v-else-if="sortedAppeals.length === 0">
           <td colspan="8">Заявки не найдены</td>
         </tr>
-        <tr v-for="appeal in appeals" :key="appeal.id">
+        <tr v-for="appeal in sortedAppeals" :key="appeal.id">
           <td>{{ appeal.number }}</td>
           <td>
             {{
@@ -81,9 +115,7 @@
               })
             }}
           </td>
-          <td>
-            {{ getAddress(appeal) }}
-          </td>
+          <td>{{ getAddress(appeal) }}</td>
           <td>
             {{ appeal.applicant.last_name }}
             {{ appeal.applicant.first_name[0] }}.{{
@@ -130,5 +162,9 @@
     padding: 10px 20px 10px 20px;
     gap: 32px;
     border-radius: 8px;
+  }
+
+  th {
+    cursor: pointer;
   }
 </style>

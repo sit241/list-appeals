@@ -15,6 +15,8 @@ const state = {
     premiseId: null,
   },
   isLoading: false,
+  sortBy: 'number', // Поле, по которому выполняется сортировка ('number', 'status', 'created_at')
+  sortOrder: 'asc', // Порядок сортировки ('asc', 'desc')
 };
 
 const getters = {
@@ -25,6 +27,22 @@ const getters = {
   pagination: state => state.pagination,
   filters: state => state.filters,
   isLoading: state => state.isLoading,
+  sortBy: state => state.sortBy,
+  sortOrder: state => state.sortOrder,
+  sortedAppeals: state => {
+    return [...state.appeals].sort((a, b) => {
+      let result = 0;
+
+      if (state.sortBy === 'number') {
+        result = a.number - b.number;
+      } else if (state.sortBy === 'created_at') {
+        result = new Date(a.created_at) - new Date(b.created_at);
+      } else if (state.sortBy === 'status') {
+        result = a.status.name.localeCompare(b.status.name);
+      }
+      return state.sortOrder === 'asc' ? result : -result;
+    });
+  },
 };
 
 const actions = {
@@ -125,6 +143,16 @@ const actions = {
   setLoadingOff({ commit }) {
     commit('setLoading', false);
   },
+
+  // Выбор столбца сортировки
+  setSortBy({ commit }, sortBy) {
+    commit('setSortBy', sortBy);
+  },
+
+  // Выбор типа сортировки
+  setSortOrderActions({ commit, state }, newSortOrder) {
+    commit('setSortOrder', newSortOrder);
+  },
 };
 
 const mutations = {
@@ -148,6 +176,12 @@ const mutations = {
   },
   setLoading(state, isLoading) {
     state.isLoading = isLoading;
+  },
+  setSortBy(state, sortBy) {
+    state.sortBy = sortBy;
+  },
+  setSortOrder(state, sortOrder) {
+    state.sortOrder = sortOrder;
   },
 };
 
