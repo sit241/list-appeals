@@ -32,14 +32,9 @@
         passwordField.type = this.showPassword ? 'text' : 'password';
       },
       setActiveInput(input) {
-        console.log('test');
-        console.log(this.activeInput);
-
         this.activeInput = input;
       },
       clearActiveInput() {
-        console.log('test2');
-        console.log(this.activeInput);
         this.activeInput = null;
       },
     },
