@@ -12,9 +12,10 @@
 
 <template>
   <div class="wrapper">
-    <div class="header">
+    <!-- TODO: для быстрого тестирования логики выхода и входа -->
+    <!-- <div class="header">
       <LogoutButton />
-    </div>
+    </div> -->
 
     <AppealsList />
   </div>
@@ -23,6 +24,7 @@
 <style lang="scss" scoped>
   .wrapper {
     padding: 15px;
+    padding-bottom: 0;
   }
   .header {
     display: flex;
