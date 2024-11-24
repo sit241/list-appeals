@@ -2,8 +2,8 @@
 import Vue from 'vue';
 import Router from 'vue-router';
 import store from '@/store';
-import Main from '@/components/pages/Main';
-import Auth from '@/components/pages/Auth';
+import Main from '@/pages/Main';
+import Auth from '@/pages/Auth';
 
 Vue.use(Router);
 
