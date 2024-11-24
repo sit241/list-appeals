@@ -50,12 +50,15 @@
 <template>
   <div class="pagination-wrapper">
     <div class="pagination-info">
-      <span
-        >{{ (pagination.page - 1) * pagination.pageSize + 1 }}–{{
+      <span>
+        <strong>{{ (pagination.page - 1) * pagination.pageSize + 1 }}</strong
+        >–
+        <strong>{{
           Math.min(pagination.page * pagination.pageSize, pagination.total)
-        }}
-        из {{ pagination.total }} записей</span
-      >
+        }}</strong>
+        из <strong>{{ pagination.total }}</strong> записей
+      </span>
+
       <select v-model="pagination.pageSize" @change="changePageSize">
         <option v-for="size in pageSizes" :key="size" :value="size">
           {{ size }}
@@ -97,9 +100,35 @@
 </template>
 
 <style lang="scss">
+  @import '@/assets/scss/variables.scss';
+
   .pagination-wrapper {
     display: flex;
     justify-content: space-between;
+  }
+
+  .pagination-info {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+
+    select {
+      all: unset; /* Сбрасываем все стили */
+      border-bottom: 1px solid $border-color;
+      padding-right: 30px; /* Отступ для стрелки */
+      position: relative;
+      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path d="M0 0 L5 5 L10 0 Z" fill="fill=%757575"/></svg>')
+        no-repeat right center;
+      background-size: 10px 10px; /* Размер стрелки */
+      appearance: none; /* Убираем стандартное оформление */
+      -webkit-appearance: none;
+    }
+
+    select::after {
+      content: ''; /* Создаём стрелочку, если не хотите использовать фоновое изображение */
+    }
   }
 
   .pagination {

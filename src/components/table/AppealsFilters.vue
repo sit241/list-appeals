@@ -61,20 +61,19 @@
 
 <template>
   <div class="filters">
-    <input
-      v-model="search"
-      placeholder="Поиск по заявкам"
-      @input="onSearchInput"
-    />
-    <i class="mdi mdi-magnify"></i>
+    <div class="search">
+      <input
+        v-model="search"
+        placeholder="Поиск (№ заявки, название)"
+        @input="onSearchInput"
+      />
+      <i class="mdi mdi-magnify"></i>
+    </div>
 
     <div class="custom-select">
       <div class="custom-select-trigger" @click="toggleDropdown">
         {{ selectedPremise }}
-        <i
-          class="mdi mdi-chevron-down"
-          :class="isDropdownOpen ? 'open' : ''"
-        ></i>
+        <i class="mdi mdi-menu-up" :class="isDropdownOpen ? 'open' : ''"></i>
       </div>
       <ul v-if="isDropdownOpen" class="custom-options">
         <li
@@ -97,22 +96,56 @@
   .filters {
     display: flex;
     gap: 16px;
-    margin-bottom: 20px;
+
+    width: 100%;
+
+    color: #999999;
+
+    font-size: 14px;
+    font-weight: 400;
+    line-height: 20px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
   }
 
   .filters input {
-    padding: 8px;
+    padding: 18px;
+    padding-left: 0;
+    overflow: visible;
+  }
+
+  .search {
+    width: 50%;
+    border-bottom: 1px solid $border-color;
+
+    display: flex;
+
+    input {
+      all: unset;
+      flex-grow: 1;
+      border: none;
+    }
+
+    i {
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      padding: 12px;
+    }
   }
 
   .custom-select {
     position: relative;
-    width: 250px;
+    width: 50%;
+    border-bottom: 1px solid $border-color;
 
     .custom-select-trigger {
       display: flex;
       justify-content: space-between;
       align-items: center;
       padding: 10px 12px;
+      padding-left: 0;
       cursor: pointer;
       font-size: 16px;
       font-weight: 500;
@@ -122,12 +155,14 @@
         background: #e9ecef;
       }
 
-      .mdi-chevron-down {
+      .mdi-menu-up {
+        font-size: 24px;
         transition: transform 0.3s;
+        transform: rotate(-180deg);
       }
 
-      .mdi-chevron-down.open {
-        transform: rotate(-180deg);
+      .mdi-menu-up.open {
+        transform: rotate(0deg);
       }
     }
 
