@@ -13,9 +13,7 @@
 <template>
   <div class="wrapper">
     <!-- TODO: для быстрого тестирования логики выхода и входа -->
-    <!-- <div class="header">
-      <LogoutButton />
-    </div> -->
+    <router-view />
 
     <AppealsList />
   </div>
