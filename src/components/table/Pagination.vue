@@ -1,8 +1,12 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
+  import CustomSelect from '@/components/other/CustomSelect.vue';
 
   export default {
     name: 'Pagination',
+    components: {
+      CustomSelect,
+    },
     data() {
       return {
         pageSizes: [10, 20, 50, 100], // Возможные размеры страницы
@@ -32,6 +36,13 @@
         }
         return pages;
       },
+      pageSizeOptions() {
+        // Преобразуем pageSizes в формат, ожидаемый CustomSelect
+        return this.pageSizes.map(size => ({
+          id: size,
+          address: size.toString(),
+        }));
+      },
     },
     methods: {
       ...mapActions('appealsModule', ['setPagination', 'fetchAppeals']),
@@ -39,8 +50,8 @@
         this.setPagination({ page: newPage });
         this.fetchAppeals();
       },
-      changePageSize() {
-        this.setPagination({ pageSize: this.pagination.pageSize, page: 1 });
+      changePageSize(newSize) {
+        this.setPagination({ pageSize: newSize, page: 1 });
         this.fetchAppeals();
       },
     },
@@ -51,19 +62,21 @@
   <div class="pagination-wrapper">
     <div class="pagination-info">
       <span>
-        <strong>{{ (pagination.page - 1) * pagination.pageSize + 1 }}</strong
-        >–
+        <strong>{{ (pagination.page - 1) * pagination.pageSize + 1 }}</strong>
+        –
         <strong>{{
           Math.min(pagination.page * pagination.pageSize, pagination.total)
         }}</strong>
         из <strong>{{ pagination.total }}</strong> записей
       </span>
 
-      <select v-model="pagination.pageSize" @change="changePageSize">
-        <option v-for="size in pageSizes" :key="size" :value="size">
-          {{ size }}
-        </option>
-      </select>
+      <CustomSelect
+        :options="pageSizeOptions"
+        v-model="pagination.pageSize"
+        placeholder="Страница"
+        @input="changePageSize"
+        direction="up"
+      />
     </div>
     <div class="pagination">
       <button :disabled="pagination.page === 1" @click="changePage(1)">
@@ -99,12 +112,13 @@
   </div>
 </template>
 
-<style lang="scss">
+<style lang="scss" scoped>
   @import '@/assets/scss/variables.scss';
 
   .pagination-wrapper {
     display: flex;
     justify-content: space-between;
+    flex-direction: row;
   }
 
   .pagination-info {
@@ -113,22 +127,6 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
-
-    select {
-      all: unset; /* Сбрасываем все стили */
-      border-bottom: 1px solid $border-color;
-      padding-right: 30px; /* Отступ для стрелки */
-      position: relative;
-      background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10"><path d="M0 0 L5 5 L10 0 Z" fill="fill=%757575"/></svg>')
-        no-repeat right center;
-      background-size: 10px 10px; /* Размер стрелки */
-      appearance: none; /* Убираем стандартное оформление */
-      -webkit-appearance: none;
-    }
-
-    select::after {
-      content: ''; /* Создаём стрелочку, если не хотите использовать фоновое изображение */
-    }
   }
 
   .pagination {
