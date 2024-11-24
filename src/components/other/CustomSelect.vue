@@ -88,14 +88,15 @@
   .custom-select {
     position: relative;
     width: 100%;
-    border-bottom: 1px solid $border-color;
+    height: 100%;
 
     .custom-select-trigger {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 10px 12px;
-      padding-left: 0;
+      height: 100%;
+
+      padding: 0;
       cursor: pointer;
       font-size: 16px;
       font-weight: 500;
@@ -106,6 +107,7 @@
       }
 
       .mdi-menu-up {
+        color: #999999;
         font-size: 24px;
         transition: transform 0.3s;
         transform: rotate(0deg);

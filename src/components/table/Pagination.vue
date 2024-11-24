@@ -61,7 +61,7 @@
 <template>
   <div class="pagination-wrapper">
     <div class="pagination-info">
-      <span>
+      <span class="text">
         <strong>{{ (pagination.page - 1) * pagination.pageSize + 1 }}</strong>
         –
         <strong>{{
@@ -70,13 +70,15 @@
         из <strong>{{ pagination.total }}</strong> записей
       </span>
 
-      <CustomSelect
-        :options="pageSizeOptions"
-        v-model="pagination.pageSize"
-        placeholder="Страница"
-        @input="changePageSize"
-        direction="up"
-      />
+      <div class="select">
+        <CustomSelect
+          :options="pageSizeOptions"
+          v-model="pagination.pageSize"
+          placeholder="Страница"
+          @input="changePageSize"
+          direction="up"
+        />
+      </div>
     </div>
     <div class="pagination">
       <button :disabled="pagination.page === 1" @click="changePage(1)">
@@ -127,6 +129,21 @@
     align-items: center;
     justify-content: center;
     gap: 16px;
+
+    .text {
+      font-size: 14px;
+      line-height: 16.41px;
+      text-align: left;
+      text-underline-position: from-font;
+      text-decoration-skip-ink: none;
+      white-space: nowrap;
+    }
+
+    .select {
+      height: 40px;
+      width: 89px;
+      border-bottom: 1px solid $border-color;
+    }
   }
 
   .pagination {
@@ -136,17 +153,32 @@
     gap: 8px;
 
     button {
+      width: 38px;
+
       padding: 5px 10px;
       border: none;
       cursor: pointer;
       font-size: 14px;
+      background-color: transparent;
 
       &:disabled {
         cursor: not-allowed;
       }
 
       &.active {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
         font-weight: bold;
+        width: 32px;
+        height: 32px;
+        padding: 10px 16px 10px 16px;
+        gap: 4px;
+        border-radius: 50px;
+
+        background-color: $primary-color;
+        color: $background-color;
       }
     }
 

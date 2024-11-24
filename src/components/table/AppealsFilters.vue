@@ -65,12 +65,14 @@
       <i class="mdi mdi-magnify"></i>
     </div>
 
-    <CustomSelect
-      :options="premises"
-      v-model="premiseId"
-      placeholder="Дом"
-      @input="onPremiseSelect"
-    />
+    <div class="select">
+      <CustomSelect
+        :options="premises"
+        v-model="premiseId"
+        placeholder="Дом"
+        @input="onPremiseSelect"
+      />
+    </div>
   </div>
 </template>
 
@@ -117,5 +119,10 @@
       align-items: center;
       padding: 12px;
     }
+  }
+
+  .select {
+    width: 50%;
+    border-bottom: 1px solid $border-color;
   }
 </style>
