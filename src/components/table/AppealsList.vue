@@ -148,7 +148,7 @@
                     appeal.applicant.patronymic_name[0]
                   }}.
                 </td>
-                <td>{{ appeal.description }}</td>
+                <td class="description">{{ appeal.description }}</td>
                 <td>
                   {{
                     new Date(appeal.due_date).toLocaleString('ru-RU', {
@@ -274,6 +274,14 @@
     text-align: start;
     border-bottom: 1px solid $border-color;
     padding: 0;
+
+    &.description {
+      max-width: 200px;
+      padding-right: 8px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
   }
 
   .grey {

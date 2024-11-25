@@ -3,8 +3,6 @@ import axios from '../plugins/axios';
 const state = {
   appeals: [], // Список заявок
   premises: [], // Список домов для фильтрации и автокомплита
-  apartments: [], // Список квартир для автокомплита
-  appealDetails: null, // Детали текущей заявки (для редактирования)
   pagination: {
     page: 1,
     pageSize: 10,
@@ -22,8 +20,6 @@ const state = {
 const getters = {
   appeals: state => state.appeals,
   premises: state => state.premises,
-  apartments: state => state.apartments,
-  appealDetails: state => state.appealDetails,
   pagination: state => state.pagination,
   filters: state => state.filters,
   isLoading: state => state.isLoading,
@@ -85,45 +81,6 @@ const actions = {
     }
   },
 
-  // Получить список квартир
-  async fetchApartments({ commit }, premiseId) {
-    try {
-      const response = await axios.get(`/geo/v1.0/apartments/`, {
-        params: { premise_id: premiseId },
-      });
-      commit('setApartments', response.data);
-    } catch (error) {
-      console.error('Ошибка загрузки квартир:', error);
-    }
-  },
-
-  // Создать заявку
-  async createAppeal({ dispatch }, appealData) {
-    try {
-      await axios.post('/appeals/v1.0/appeals/', appealData);
-      dispatch('fetchAppeals'); // Обновить список заявок
-    } catch (error) {
-      console.error('Ошибка создания заявки:', error);
-      throw error;
-    }
-  },
-
-  // Редактировать заявку
-  async updateAppeal({ dispatch }, { appealId, appealData }) {
-    try {
-      await axios.patch(`/appeals/v1.0/appeals/${appealId}/`, appealData);
-      dispatch('fetchAppeals'); // Обновить список заявок
-    } catch (error) {
-      console.error('Ошибка редактирования заявки:', error);
-      throw error;
-    }
-  },
-
-  // Установить детали заявки
-  setAppealDetails({ commit }, appealDetails) {
-    commit('setAppealDetails', appealDetails);
-  },
-
   // Установить фильтры
   setFilters({ commit }, filters) {
     commit('setFilters', filters);
@@ -161,12 +118,6 @@ const mutations = {
   },
   setPremises(state, premises) {
     state.premises = premises;
-  },
-  setApartments(state, apartments) {
-    state.apartments = apartments;
-  },
-  setAppealDetails(state, appealDetails) {
-    state.appealDetails = appealDetails;
   },
   setFilters(state, filters) {
     state.filters = { ...filters };
