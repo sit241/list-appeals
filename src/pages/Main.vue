@@ -1,29 +1,26 @@
 <script>
   import AppealsList from '@/components/table/AppealsList.vue';
   import LogoutButton from '@/components/other/LogoutButton.vue';
+  import RequestForm from '@/components/popup/RequestForm.vue';
 
   export default {
     components: {
       AppealsList,
       LogoutButton,
+      RequestForm,
     },
   };
 </script>
 
 <template>
   <div class="wrapper">
-    <!-- TODO: для быстрого тестирования логики выхода и входа -->
-    <router-view />
+    <RequestForm />
 
     <AppealsList />
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .wrapper {
-    padding: 15px;
-    padding-bottom: 0;
-  }
   .header {
     display: flex;
     justify-content: flex-end;

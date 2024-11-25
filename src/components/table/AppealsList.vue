@@ -66,111 +66,118 @@
 </script>
 
 <template>
-  <div class="appeals-list">
-    <div class="wrapper-btn">
-      <button type="creat" class="creat-button">Создать</button>
-    </div>
+  <div class="wrapper">
+    <div class="appeals-list">
+      <div class="wrapper-btn">
+        <button type="creat" class="creat-button">Создать</button>
+      </div>
 
-    <Filters />
+      <Filters />
 
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th @click="handleSort('number')" style="cursor: pointer">
-              №
-              <span v-if="sortBy === 'number'">
-                <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
-                <i v-else class="mdi mdi-arrow-down"></i>
-              </span>
-              <span v-else>
-                <i class="mdi mdi-arrow-up grey" />
-              </span>
-            </th>
-            <th @click="handleSort('created_at')" style="cursor: pointer">
-              Создана
-              <span v-if="sortBy === 'created_at'">
-                <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
-                <i v-else class="mdi mdi-arrow-down"></i>
-              </span>
-              <span v-else>
-                <i class="mdi mdi-arrow-up grey" />
-              </span>
-            </th>
-            <th>Адрес</th>
-            <th>Заявитель</th>
-            <th>Описание</th>
-            <th>Срок</th>
-            <th @click="handleSort('status')" style="cursor: pointer">
-              Статус
-              <span v-if="sortBy === 'status'">
-                <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
-                <i v-else class="mdi mdi-arrow-down"></i>
-              </span>
-              <span v-else>
-                <i class="mdi mdi-arrow-up grey" />
-              </span>
-            </th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-if="isLoading" class="load">
-            <td colspan="7">
-              <div class="wrap-load-text">
-                Загрузка...
-              </div>
-            </td>
-          </tr>
-          <tr v-else-if="sortedAppeals.length === 0">
-            <td colspan="7">Заявки не найдены</td>
-          </tr>
-          <template v-else>
-            <tr v-for="appeal in sortedAppeals" :key="appeal.id">
-              <td>
-                <div class="number">
-                  {{ appeal.number }}
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th @click="handleSort('number')" style="cursor: pointer">
+                №
+                <span v-if="sortBy === 'number'">
+                  <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
+                  <i v-else class="mdi mdi-arrow-down"></i>
+                </span>
+                <span v-else>
+                  <i class="mdi mdi-arrow-up grey" />
+                </span>
+              </th>
+              <th @click="handleSort('created_at')" style="cursor: pointer">
+                Создана
+                <span v-if="sortBy === 'created_at'">
+                  <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
+                  <i v-else class="mdi mdi-arrow-down"></i>
+                </span>
+                <span v-else>
+                  <i class="mdi mdi-arrow-up grey" />
+                </span>
+              </th>
+              <th>Адрес</th>
+              <th>Заявитель</th>
+              <th>Описание</th>
+              <th>Срок</th>
+              <th @click="handleSort('status')" style="cursor: pointer">
+                Статус
+                <span v-if="sortBy === 'status'">
+                  <i v-if="sortOrder === 'asc'" class="mdi mdi-arrow-up"></i>
+                  <i v-else class="mdi mdi-arrow-down"></i>
+                </span>
+                <span v-else>
+                  <i class="mdi mdi-arrow-up grey" />
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-if="isLoading" class="load">
+              <td colspan="7">
+                <div class="wrap-load-text">
+                  Загрузка...
                 </div>
               </td>
-              <td>
-                {{
-                  new Date(appeal.created_at).toLocaleString('ru-RU', {
-                    day: 'numeric',
-                    month: 'numeric',
-                    year: 'numeric',
-                  })
-                }}
-              </td>
-              <td>{{ getAddress(appeal) }}</td>
-              <td>
-                {{ appeal.applicant.last_name }}
-                {{ appeal.applicant.first_name[0] }}.{{
-                  appeal.applicant.patronymic_name[0]
-                }}.
-              </td>
-              <td>{{ appeal.description }}</td>
-              <td>
-                {{
-                  new Date(appeal.due_date).toLocaleString('ru-RU', {
-                    day: 'numeric',
-                    month: 'numeric',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                  })
-                }}
-              </td>
-              <td>{{ appeal.status.name }}</td>
             </tr>
-          </template>
-        </tbody>
-      </table>
+            <tr v-else-if="sortedAppeals.length === 0">
+              <td colspan="7">Заявки не найдены</td>
+            </tr>
+            <template v-else>
+              <tr v-for="appeal in sortedAppeals" :key="appeal.id">
+                <td>
+                  <div class="number">
+                    {{ appeal.number }}
+                  </div>
+                </td>
+                <td>
+                  {{
+                    new Date(appeal.created_at).toLocaleString('ru-RU', {
+                      day: 'numeric',
+                      month: 'numeric',
+                      year: 'numeric',
+                    })
+                  }}
+                </td>
+                <td>{{ getAddress(appeal) }}</td>
+                <td>
+                  {{ appeal.applicant.last_name }}
+                  {{ appeal.applicant.first_name[0] }}.{{
+                    appeal.applicant.patronymic_name[0]
+                  }}.
+                </td>
+                <td>{{ appeal.description }}</td>
+                <td>
+                  {{
+                    new Date(appeal.due_date).toLocaleString('ru-RU', {
+                      day: 'numeric',
+                      month: 'numeric',
+                      year: 'numeric',
+                      hour: '2-digit',
+                      minute: '2-digit',
+                    })
+                  }}
+                </td>
+                <td>{{ appeal.status.name }}</td>
+              </tr>
+            </template>
+          </tbody>
+        </table>
+      </div>
+      <pagination @change="fetchAppeals" />
     </div>
-    <pagination @change="fetchAppeals" />
   </div>
 </template>
 
 <style lang="scss" scoped>
   @import '@/assets/scss/variables.scss';
+
+  .wrapper {
+    padding: 15px;
+    padding-bottom: 0;
+  }
 
   .wrapper-btn {
     flex-grow: 1;

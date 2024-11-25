@@ -4,8 +4,6 @@ import Router from 'vue-router';
 import store from '@/store';
 import Main from '@/pages/Main';
 import Auth from '@/pages/Auth';
-import AppealsList from '@/components/table/AppealsList.vue';
-import LogoutButton from '@/components/other/LogoutButton.vue';
 
 Vue.use(Router);
 
@@ -14,26 +12,15 @@ const router = new Router({
   routes: [
     {
       path: '/',
+      name: 'Main',
       component: Main,
       meta: { requiresAuth: true },
-      children: [
-        {
-          path: '',
-          name: 'MainHome',
-        },
-        {
-          path: 'LogoutButton',
-          name: 'LogoutButton',
-          component: LogoutButton,
-        },
-      ],
     },
     {
       path: '/login',
       name: 'Auth',
       component: Auth,
     },
-    // Можно добавить 404 страницу или другие маршруты
   ],
 });
 
