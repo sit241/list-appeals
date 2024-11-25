@@ -1,6 +1,6 @@
 <script>
   import { mapGetters, mapActions } from 'vuex';
-  import CustomSelect from '@/components/other/CustomSelect.vue'; // Убедитесь, что путь правильный
+  import CustomSelect from '@/components/other/CustomSelect.vue';
 
   export default {
     name: 'Filters',

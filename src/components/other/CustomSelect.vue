@@ -28,7 +28,11 @@
     computed: {
       displayText() {
         const selected = this.options.find(option => option.id === this.value);
-        return selected ? selected.address : this.placeholder;
+        if (selected) {
+          // Проверяем наличие address, иначе используем label
+          return selected.address || selected.label;
+        }
+        return this.placeholder;
       },
       dropdownClass() {
         return {
@@ -76,7 +80,7 @@
         :class="{ selected: option.id === value }"
         @click="selectOption(option.id)"
       >
-        {{ option.address }}
+        {{ option.address || option.label }}
       </li>
     </ul>
   </div>
