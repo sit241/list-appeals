@@ -113,7 +113,9 @@
       <form @submit.prevent="handleSubmit">
         <div class="form-row">
           <div class="wrapper-select">
+            <label for="house-select">Дом</label>
             <CustomSelect
+              id="house-select"
               :options="premises"
               v-model="houseId"
               placeholder="Дом"
@@ -121,50 +123,76 @@
             />
           </div>
           <div class="wrapper-select">
+            <label for="apartment-select">Квартира</label>
             <CustomSelect
+              id="apartment-select"
               :options="apartments"
               v-model="HouseApartmentId"
               placeholder="Квартира"
             />
           </div>
-          <input
-            type="datetime-local"
-            v-model="computedAppealData.dateTime"
-            placeholder="Срок"
-            class="input-field"
-          />
+          <div class="datetime-input">
+            <label for="datetime-input">Срок</label>
+            <input
+              id="datetime-input"
+              type="datetime-local"
+              v-model="computedAppealData.dateTime"
+              placeholder="Срок"
+              class="input-field"
+            />
+          </div>
         </div>
         <div class="form-row">
-          <input
-            type="text"
-            v-model="computedAppealData.lastName"
-            placeholder="Фамилия"
-            class="input-field"
-          />
-          <input
-            type="text"
-            v-model="computedAppealData.firstName"
-            placeholder="Имя"
-            class="input-field"
-          />
-          <input
-            type="text"
-            v-model="computedAppealData.middleName"
-            placeholder="Отчество"
-            class="input-field"
-          />
-          <input
-            type="tel"
-            v-model="computedAppealData.phone"
-            placeholder="Телефон"
-            class="input-field"
-          />
+          <div class="field">
+            <label for="lastname-input">Фамилия</label>
+            <input
+              id="lastname-input"
+              type="text"
+              v-model="computedAppealData.lastName"
+              placeholder="Фамилия"
+              class="input-field"
+            />
+          </div>
+          <div class="field">
+            <label for="firstname-input">Имя</label>
+            <input
+              id="firstname-input"
+              type="text"
+              v-model="computedAppealData.firstName"
+              placeholder="Имя"
+              class="input-field"
+            />
+          </div>
+          <div class="field">
+            <label for="middlename-input">Отчество</label>
+            <input
+              id="middlename-input"
+              type="text"
+              v-model="computedAppealData.middleName"
+              placeholder="Отчество"
+              class="input-field"
+            />
+          </div>
+          <div class="field">
+            <label for="phone-input">Телефон</label>
+            <input
+              id="phone-input"
+              type="tel"
+              v-model="computedAppealData.phone"
+              placeholder="Телефон"
+              class="input-field"
+            />
+          </div>
         </div>
-        <textarea
-          v-model="computedAppealData.description"
-          placeholder="Описание заявки"
-          class="textarea-field"
-        ></textarea>
+        <div class="field-textarea">
+          <label for="description-textarea">Описание заявки</label>
+          <textarea
+            id="description-textarea"
+            v-model="computedAppealData.description"
+            placeholder="Описание заявки"
+            class="textarea-field"
+          ></textarea>
+        </div>
 
         <div class="wrapper-button">
           <button type="submit" class="submit-button">Создать</button>
@@ -245,6 +273,36 @@
       display: flex;
       flex-direction: column;
       gap: 32px;
+
+      .field-textarea,
+      .field,
+      .datetime-input,
+      .wrapper-select {
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+      }
+
+      .datetime-input {
+        width: 215px;
+        height: 56px;
+      }
+
+      .field {
+        height: 56px;
+        width: 157px;
+      }
+
+      label {
+        font-size: 12px;
+        font-weight: 400;
+        line-height: 18px;
+        text-align: left;
+        text-underline-position: from-font;
+        text-decoration-skip-ink: none;
+
+        color: $primary-color;
+      }
     }
 
     .form-row {
@@ -261,14 +319,13 @@
       .input-field {
         all: unset;
         flex: 1;
-        padding: 17px 0;
+        padding: 8px 0;
         border: none;
         border-bottom: 1px solid $border-color;
         font-size: 14px;
         color: $text-color;
         box-sizing: border-box;
-        width: 157px;
-        height: 56px;
+        // width: 157px;
         text-align: start;
       }
     }
@@ -278,7 +335,7 @@
       text-align: start;
 
       width: 100%;
-      height: 132px;
+      height: 132px !important;
 
       border: none;
       border-bottom: 1px solid $border-color;
