@@ -53,6 +53,7 @@
         'setApartmentId',
         'setAppealData',
         'setAppeal',
+        'setPopUp',
       ]),
       async handleSubmit() {
         if (this.appealId) {
@@ -99,7 +100,7 @@
 </script>
 
 <template>
-  <div class="back">
+  <div class="back" @click.self="setPopUp(false)">
     <div class="form-wrapper">
       <div class="form-header">
         <h3>Создание заявки</h3>

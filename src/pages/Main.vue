@@ -1,4 +1,6 @@
 <script>
+  import { mapGetters } from 'vuex';
+
   import AppealsList from '@/components/table/AppealsList.vue';
   import LogoutButton from '@/components/other/LogoutButton.vue';
   import RequestForm from '@/components/popup/RequestForm.vue';
@@ -9,12 +11,17 @@
       LogoutButton,
       RequestForm,
     },
+    computed: {
+      ...mapGetters('appealForm', ['popUp']),
+    },
   };
 </script>
 
 <template>
   <div class="wrapper">
-    <RequestForm />
+    <template v-if="this.popUp">
+      <RequestForm />
+    </template>
 
     <AppealsList />
   </div>

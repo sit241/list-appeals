@@ -40,6 +40,7 @@
         'setPagination',
         'fetchAppeals',
       ]),
+      ...mapActions('appealForm', ['setPopUp']),
       handleSort(field) {
         if (this.sortBy === field) {
           // Переключение порядка сортировки
@@ -69,7 +70,9 @@
   <div class="wrapper">
     <div class="appeals-list">
       <div class="wrapper-btn">
-        <button type="creat" class="creat-button">Создать</button>
+        <button type="creat" class="creat-button" @click="setPopUp(true)">
+          Создать
+        </button>
       </div>
 
       <Filters />

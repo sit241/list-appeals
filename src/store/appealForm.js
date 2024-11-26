@@ -20,10 +20,13 @@ const state = {
 
   loading: false,
   error: null,
+
+  popUp: false,
 };
 
 const getters = {
   appealId: state => state.appealId,
+  popUp: state => state.popUp,
   appealData: state => state.appealData,
   premises: state => state.premises,
   premiseId: state => state.premiseId,
@@ -150,6 +153,9 @@ const actions = {
   setAppealData({ commit }, appealData) {
     commit('SET_APPEALD_DATA', appealData);
   },
+  setPopUp({ commit }, popUp) {
+    commit('SET_POP_UP', popUp);
+  },
 
   // Для заполнения данных обращения
   setAppeal({ commit }, { appealId, premiseId, apartmentId, appealData }) {
@@ -170,6 +176,9 @@ const actions = {
 };
 
 const mutations = {
+  SET_POP_UP(state, popUp) {
+    state.popUp = popUp;
+  },
   SET_APPEAL_ID(state, appealId) {
     state.appealId = appealId;
   },
