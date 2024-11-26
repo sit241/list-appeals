@@ -37,8 +37,23 @@ const getters = {
 };
 
 const actions = {
+  // Установить текст ошибки и очистить через 2 секунды
+  async setErrorWithTimeout({ commit }, errorData) {
+    let modifiedOutput = errorData.data.due_date[0].replace(
+      'datetime',
+      'указанной даты'
+    );
+
+    const errors = errorData.detail + ' ' + modifiedOutput;
+    commit('SET_ERROR', errors);
+
+    setTimeout(() => {
+      commit('SET_ERROR', null);
+    }, 5000);
+  },
+
   // Создание нового обращения
-  async createAppeal({ commit }) {
+  async createAppeal({ commit, dispatch }) {
     commit('SET_LOADING', true);
     try {
       const payload = {
@@ -61,7 +76,10 @@ const actions = {
       commit('SET_ERROR', null);
       return response.data;
     } catch (error) {
-      commit('SET_ERROR', 'Ошибка при создании обращения');
+      console.log(error);
+      console.log(error.response.data);
+
+      dispatch('setErrorWithTimeout', error.response.data);
       throw error;
     } finally {
       commit('SET_LOADING', false);
@@ -69,7 +87,7 @@ const actions = {
   },
 
   // Редактирование существующего обращения
-  async updateAppeal({ commit }) {
+  async updateAppeal({ commit, dispatch }) {
     commit('SET_LOADING', true);
     try {
       const payload = {
@@ -95,7 +113,7 @@ const actions = {
       commit('SET_ERROR', null);
       return response.data;
     } catch (error) {
-      commit('SET_ERROR', 'Ошибка при обновлении обращения');
+      dispatch('setErrorWithTimeout', 'Ошибка при обновлении обращения');
       throw error;
     } finally {
       commit('SET_LOADING', false);
@@ -103,41 +121,32 @@ const actions = {
   },
 
   // Получение домов с автокомплитом
-  async fetchPremises({ commit }, searchTerm) {
+  async fetchPremises({ commit, dispatch }) {
     commit('SET_LOADING', true);
     try {
       const response = await axios.get('/geo/v2.0/user-premises/');
-
-      console.log(response.data);
-
       commit('SET_PREMISES', response.data);
       commit('SET_ERROR', null);
     } catch (error) {
-      commit('SET_ERROR', 'Ошибка при загрузке домов');
+      dispatch('setErrorWithTimeout', 'Ошибка при загрузке домов');
     } finally {
       commit('SET_LOADING', false);
     }
   },
 
   // Получение квартир с автокомплитом на основе premise_id
-  async fetchApartments({ commit }) {
+  async fetchApartments({ commit, dispatch }) {
     commit('SET_LOADING', true);
-
-    console.log(state.premiseId);
-
     try {
       const response = await axios.get('/geo/v1.0/apartments/', {
         params: {
           premise_id: state.premiseId,
         },
       });
-
-      console.log(response.data);
-
       commit('SET_APARTMENTS', response.data);
       commit('SET_ERROR', null);
     } catch (error) {
-      commit('SET_ERROR', 'Ошибка при загрузке квартир');
+      dispatch('setErrorWithTimeout', 'Ошибка при загрузке квартир');
     } finally {
       commit('SET_LOADING', false);
     }

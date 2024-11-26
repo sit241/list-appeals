@@ -17,6 +17,7 @@
         'apartmentId',
         'appealData',
         'appealId',
+        'error',
       ]),
       houseId: {
         get() {
@@ -101,6 +102,9 @@
 
 <template>
   <div class="back" @click.self="setPopUp(false)">
+    <div class="error-message" v-if="error">
+      {{ error }}
+    </div>
     <div class="form-wrapper">
       <div class="form-header">
         <h3>Создание заявки</h3>
@@ -172,6 +176,21 @@
 
 <style lang="scss">
   @import '@/assets/scss/variables.scss';
+
+  .error-message {
+    position: absolute;
+    bottom: 26px;
+
+    margin-top: 15px;
+    //   color: $error-color;
+    color: $background-color;
+    font-size: 14px;
+
+    //   background-color: $background-color;
+    background-color: $error-color;
+    padding: 6px;
+    border-radius: 5px;
+  }
 
   .back {
     position: fixed;
