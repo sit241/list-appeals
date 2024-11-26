@@ -60,10 +60,7 @@
         if (this.appealId) {
           try {
             await this.updateAppeal(this.computedAppealData);
-            alert('Обращение успешно создано!');
-          } catch (error) {
-            console.error('Ошибка при создании обращения:', error);
-          }
+          } catch (error) {}
         } else {
           try {
             await this.createAppeal(this.computedAppealData);
@@ -102,9 +99,7 @@
 
 <template>
   <div class="back" @click.self="setPopUp(false)">
-    <div class="error-message" v-if="error">
-      {{ error }}
-    </div>
+    <div class="error-message" v-if="error">{{ error }}</div>
     <div class="form-wrapper">
       <div class="form-header">
         <h3>Создание заявки</h3>
@@ -113,7 +108,11 @@
       <form @submit.prevent="handleSubmit">
         <div class="form-row">
           <div class="wrapper-select">
-            <label for="house-select">Дом</label>
+            <transition name="fade">
+              <label :class="{ hidden: !houseId }" for="house-select">
+                Дом
+              </label>
+            </transition>
             <CustomSelect
               id="house-select"
               :options="premises"
@@ -123,7 +122,16 @@
             />
           </div>
           <div class="wrapper-select">
-            <label for="apartment-select">Квартира</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !HouseApartmentId,
+                }"
+                for="apartment-select"
+              >
+                Квартира
+              </label>
+            </transition>
             <CustomSelect
               id="apartment-select"
               :options="apartments"
@@ -132,7 +140,16 @@
             />
           </div>
           <div class="datetime-input">
-            <label for="datetime-input">Срок</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !computedAppealData.dateTime,
+                }"
+                for="datetime-input"
+              >
+                Срок
+              </label>
+            </transition>
             <input
               id="datetime-input"
               type="datetime-local"
@@ -144,7 +161,16 @@
         </div>
         <div class="form-row">
           <div class="field">
-            <label for="lastname-input">Фамилия</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !computedAppealData.lastName,
+                }"
+                for="lastname-input"
+              >
+                Фамилия
+              </label>
+            </transition>
             <input
               id="lastname-input"
               type="text"
@@ -154,7 +180,16 @@
             />
           </div>
           <div class="field">
-            <label for="firstname-input">Имя</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !computedAppealData.firstName,
+                }"
+                for="firstname-input"
+              >
+                Имя
+              </label>
+            </transition>
             <input
               id="firstname-input"
               type="text"
@@ -164,7 +199,16 @@
             />
           </div>
           <div class="field">
-            <label for="middlename-input">Отчество</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !computedAppealData.middleName,
+                }"
+                for="middlename-input"
+              >
+                Отчество
+              </label>
+            </transition>
             <input
               id="middlename-input"
               type="text"
@@ -174,7 +218,16 @@
             />
           </div>
           <div class="field">
-            <label for="phone-input">Телефон</label>
+            <transition name="fade">
+              <label
+                :class="{
+                  hidden: !computedAppealData.phone,
+                }"
+                for="phone-input"
+              >
+                Телефон
+              </label>
+            </transition>
             <input
               id="phone-input"
               type="tel"
@@ -184,8 +237,17 @@
             />
           </div>
         </div>
-        <div class="field-textarea">
-          <label for="description-textarea">Описание заявки</label>
+        <div class="wrapper-textarea">
+          <transition name="fade">
+            <label
+              :class="{
+                hidden: !computedAppealData.description,
+              }"
+              for="description-input"
+            >
+              Описание заявки
+            </label>
+          </transition>
           <textarea
             id="description-textarea"
             v-model="computedAppealData.description"
@@ -274,7 +336,6 @@
       flex-direction: column;
       gap: 32px;
 
-      .field-textarea,
       .field,
       .datetime-input,
       .wrapper-select {
@@ -330,12 +391,20 @@
       }
     }
 
+    .wrapper-textarea {
+      display: flex;
+      flex-direction: column;
+      justify-content: end;
+
+      height: 132px;
+    }
+
     .textarea-field {
       all: unset;
       text-align: start;
 
       width: 100%;
-      height: 132px !important;
+      flex-grow: 1;
 
       border: none;
       border-bottom: 1px solid $border-color;
@@ -381,5 +450,25 @@
         }
       }
     }
+  }
+
+  .label {
+    opacity: 1;
+    transition: opacity 0.3s ease;
+  }
+
+  .hidden {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 0.5s ease;
+  }
+
+  .fade-enter,
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>
