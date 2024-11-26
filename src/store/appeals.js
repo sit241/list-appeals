@@ -39,6 +39,30 @@ const getters = {
       return state.sortOrder === 'asc' ? result : -result;
     });
   },
+  //Геттер для получения форматированной строки заявки по ID. Формат: "Заявка № <номер> (от <дата>)"
+  getAppealById: state => id => {
+    const appeal = state.appeals.find(appeal => appeal.id === id);
+    if (!appeal) {
+      return 'Заявка не найдена';
+    }
+
+    const number = appeal.number;
+    const createdAt = new Date(appeal.created_at);
+    const day = String(createdAt.getDate()).padStart(2, '0');
+    const month = String(createdAt.getMonth() + 1).padStart(2, '0');
+    const year = createdAt.getFullYear();
+    const formattedDate = `${day}.${month}.${year}`;
+
+    return `Заявка № ${number} (от ${formattedDate})`;
+  },
+
+  // Геттер для получения статуса заявки по ID. Возвращает объект статуса или сообщение, если заявка не найдена.
+  getAppealStatusById: state => id => {
+    const appeal = state.appeals.find(appeal => appeal.id === id);
+    if (!appeal) return 'Заявка не найдена';
+
+    return appeal.status.name;
+  },
 };
 
 const actions = {

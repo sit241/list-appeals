@@ -19,6 +19,7 @@
         'appealId',
         'error',
       ]),
+      ...mapGetters('appealsModule', ['getAppealById', 'getAppealStatusById']),
       houseId: {
         get() {
           return this.premiseId;
@@ -66,12 +67,12 @@
         } else {
           try {
             await this.createAppeal(this.computedAppealData);
-            alert('Обращение успешно создано!');
           } catch (error) {
             console.error('Ошибка при создании обращения:', error);
           }
         }
         this.fetchAppeals();
+        this.setPopUp(false);
       },
       selectPremise() {
         this.fetchApartments();
@@ -79,21 +80,6 @@
       closePopUp() {
         this.resetState();
         this.setPopUp(false);
-      },
-      test() {
-        this.setAppeal({
-          appealId: '392cfcf4-8820-4ab1-99a4-612941ecea5c',
-          premise_id: 'be2bd482-1c62-4780-9a3c-72608f5bc09b', // ID обращения
-          apartment_id: '404432', // ID обращения
-          appealData: {
-            dateTime: '2024-11-25T21:11', // Дата и время
-            lastName: 'тест3 ', // Фамилия
-            firstName: 'тест3 ', // Имя
-            middleName: 'тест3 ', // Отчество
-            phone: '+ 996 000-00-00', // Телефон
-            description: 'отредактировал через фронт', // Описание обращения
-          },
-        });
       },
     },
 
@@ -108,8 +94,8 @@
     <div class="error-message" v-if="error">{{ error }}</div>
     <div class="form-wrapper">
       <div class="form-header">
-        <h3>Создание заявки</h3>
-        <span>Новая</span>
+        <h3>{{ appealId ? getAppealById(appealId) : 'Создание заявки' }}</h3>
+        <span>{{ appealId ? getAppealStatusById(appealId) : 'Новая' }}</span>
       </div>
       <form @submit.prevent="handleSubmit">
         <div class="form-row">
@@ -382,7 +368,7 @@
         width: 215px;
         height: 56px;
         border-bottom: 1px solid $border-color;
-        color: $text-color;
+        color: #999;
       }
 
       .input-field {

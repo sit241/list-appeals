@@ -59,15 +59,13 @@
         this.$emit('editAppeal', appeal);
       },
       editAppleal(appeal) {
-        console.log(appeal);
-
         this.setPopUp(true);
 
         this.setAppeal({
           appealId: appeal.id, // ID обращения
-          premise_id:
+          premiseId:
             appeal.premise && appeal.premise.id ? appeal.premise.id : null, // ID помещения
-          apartment_id:
+          apartmentId:
             appeal.apartment && appeal.apartment.id
               ? appeal.apartment.id
               : null, // ID квартиры
@@ -189,13 +187,10 @@
                 <td class="description">{{ appeal.description }}</td>
                 <td>
                   {{
-                    new Date(appeal.due_date).toLocaleString('ru-RU', {
-                      day: 'numeric',
-                      month: 'numeric',
-                      year: 'numeric',
-                      hour: '2-digit',
-                      minute: '2-digit',
-                    })
+                    new Date(appeal.due_date)
+                      .toISOString()
+                      .replace('T', ' ')
+                      .substring(0, 16)
                   }}
                 </td>
                 <td>{{ appeal.status.name }}</td>
@@ -264,7 +259,7 @@
   .table-container {
     color: $text-color;
 
-    height: 650px;
+    max-height: 650px;
     overflow-y: auto;
 
     table {

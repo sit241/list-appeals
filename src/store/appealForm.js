@@ -76,9 +76,6 @@ const actions = {
       commit('SET_ERROR', null);
       return response.data;
     } catch (error) {
-      console.log(error);
-      console.log(error.response.data);
-
       dispatch('setErrorWithTimeout', error.response.data);
       throw error;
     } finally {
@@ -167,12 +164,17 @@ const actions = {
   },
 
   // Для заполнения данных обращения
-  setAppeal({ commit }, { appealId, premiseId, apartmentId, appealData }) {
+  setAppeal(
+    { commit, dispatch },
+    { appealId, premiseId, apartmentId, appealData }
+  ) {
     commit('SET_APPEAL_ID', appealId);
     commit('SET_PREMISE_ID', premiseId);
     commit('SET_APARTMENT_ID', apartmentId);
 
     commit('SET_APPEAL_DATA', appealData);
+
+    dispatch('fetchApartments');
   },
 
   // Очистка домов и квартир
