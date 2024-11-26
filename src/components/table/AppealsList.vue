@@ -40,7 +40,7 @@
         'setPagination',
         'fetchAppeals',
       ]),
-      ...mapActions('appealForm', ['setPopUp']),
+      ...mapActions('appealForm', ['setAppeal', 'setPopUp']),
       handleSort(field) {
         if (this.sortBy === field) {
           // Переключение порядка сортировки
@@ -57,6 +57,41 @@
       },
       editAppeal(appeal) {
         this.$emit('editAppeal', appeal);
+      },
+      editAppleal(appeal) {
+        console.log(appeal);
+
+        this.setPopUp(true);
+
+        this.setAppeal({
+          appealId: appeal.id, // ID обращения
+          premise_id:
+            appeal.premise && appeal.premise.id ? appeal.premise.id : null, // ID помещения
+          apartment_id:
+            appeal.apartment && appeal.apartment.id
+              ? appeal.apartment.id
+              : null, // ID квартиры
+          appealData: {
+            dateTime: appeal.due_date ? appeal.due_date.substring(0, 16) : '', // Дата и время в формате YYYY-MM-DDTHH:MM
+            lastName:
+              appeal.applicant && appeal.applicant.last_name
+                ? appeal.applicant.last_name
+                : '', // Фамилия
+            firstName:
+              appeal.applicant && appeal.applicant.first_name
+                ? appeal.applicant.first_name
+                : '', // Имя
+            middleName:
+              appeal.applicant && appeal.applicant.patronymic_name
+                ? appeal.applicant.patronymic_name
+                : '', // Отчество
+            phone:
+              appeal.applicant && appeal.applicant.username
+                ? appeal.applicant.username
+                : '', // Телефон
+            description: appeal.description ? appeal.description : '', // Описание обращения
+          },
+        });
       },
     },
     mounted() {
@@ -131,7 +166,7 @@
             <template v-else>
               <tr v-for="appeal in sortedAppeals" :key="appeal.id">
                 <td>
-                  <div class="number">
+                  <div class="number" @click="editAppleal(appeal)">
                     {{ appeal.number }}
                   </div>
                 </td>

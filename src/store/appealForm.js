@@ -182,6 +182,11 @@ const actions = {
   clearApartments({ commit }) {
     commit('CLEAR_APARTMENTS');
   },
+
+  // Очистка всего состояния
+  resetState({ commit }) {
+    commit('RESET_STATE');
+  },
 };
 
 const mutations = {
@@ -221,7 +226,30 @@ const mutations = {
   CLEAR_APARTMENTS(state) {
     state.apartments = [];
   },
+  RESET_STATE(state) {
+    Object.assign(state, getDefaultState());
+  },
 };
+
+// Получение начального состояния
+const getDefaultState = () => ({
+  appealId: '',
+  appealData: {
+    dateTime: '',
+    lastName: '',
+    firstName: '',
+    middleName: '',
+    phone: '',
+    description: '',
+  },
+  premises: [],
+  premiseId: null,
+  apartments: [],
+  apartmentId: null,
+  loading: false,
+  error: null,
+  popUp: false,
+});
 
 export default {
   namespaced: true,

@@ -55,7 +55,9 @@
         'setAppealData',
         'setAppeal',
         'setPopUp',
+        'resetState',
       ]),
+      ...mapActions('appealsModule', ['fetchAppeals']),
       async handleSubmit() {
         if (this.appealId) {
           try {
@@ -69,11 +71,15 @@
             console.error('Ошибка при создании обращения:', error);
           }
         }
+        this.fetchAppeals();
       },
       selectPremise() {
         this.fetchApartments();
       },
-
+      closePopUp() {
+        this.resetState();
+        this.setPopUp(false);
+      },
       test() {
         this.setAppeal({
           appealId: '392cfcf4-8820-4ab1-99a4-612941ecea5c',
@@ -98,7 +104,7 @@
 </script>
 
 <template>
-  <div class="back" @click.self="setPopUp(false)">
+  <div class="back" @click.self="closePopUp">
     <div class="error-message" v-if="error">{{ error }}</div>
     <div class="form-wrapper">
       <div class="form-header">
@@ -257,7 +263,9 @@
         </div>
 
         <div class="wrapper-button">
-          <button type="submit" class="submit-button">Создать</button>
+          <button type="submit" class="submit-button">
+            {{ appealId ? 'Сохранить' : 'Создать' }}
+          </button>
         </div>
       </form>
     </div>
@@ -436,7 +444,6 @@
         cursor: pointer;
         margin-right: 0;
 
-        width: 87px;
         height: 36px;
         padding: 12px 16px 12px 16px;
         border-radius: 2px;
